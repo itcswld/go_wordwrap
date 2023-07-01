@@ -20,27 +20,26 @@ func SliceStr(s string, n int) (arr_str []string) {
 
 func WordWrap(text []rune, breakLen int) (data []string) {
 	n := 0.0
-	t := 0
+	pre := 0
 out:
 	for j, v := range text {
-		fmt.Println("j=", j, "n =", n)
 		fmt.Println("new:", string(text[:]), "| len= ", len(text))
 		if IsChinese(v) {
 			n += 1
 		} else {
 			n += 0.5
 		}
-		if len(text) <= breakLen || (j-t == len(text)-1 && n < float64(breakLen)) {
+		if len(text) <= breakLen || (j-pre == len(text)-1 && n < float64(breakLen)) {
 			fmt.Println("j=", j, "n =", n)
 			data = append(data, string(text[:]))
 			fmt.Println("last:", string(text[:]))
 			break out
 		} else if len(text) > breakLen && n >= float64(breakLen) {
-			fmt.Println("j=", j, ";n =", n, ";t =", j)
-			data = append(data, string(text[:j-t]))
-			fmt.Println("cut:", string(text[:j-t]))
-			text = text[j-t:]
-			t += j
+			fmt.Println("j=", j, ";n =", n, ";t =", pre, ";j-t=", j-pre)
+			data = append(data, string(text[:j-pre]))
+			fmt.Println("cut:", string(text[:j-pre]))
+			text = text[j-pre:]
+			pre += j - pre
 			n = 0.0
 		}
 	}
